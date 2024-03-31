@@ -19,14 +19,11 @@ const registerSlice = createSlice({
       reducer(state, action) {
         state.push(action.payload);
       },
-      prepare(firstname, lastname, email, password) {
+      prepare(regData) {
         return {
           payload: {
             id: nanoid(),
-            firstname,
-            lastname,
-            email,
-            password,
+            regData,
           },
         };
       },

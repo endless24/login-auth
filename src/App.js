@@ -4,15 +4,19 @@ import Login from "./routes/Login";
 import Register from "./routes/Register";
 import DashBoard from "./routes/DashBoard";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import AppLayout from "./routes/AppLayout";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/" element={<AppLayout />}>
+          <Route exact path="/" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="dashboard" element={<DashBoard />} />
+        </Route>
+
         <Route path="/forgotpassword" element={<ForgotPassword />} />
-        <Route path="/dashboard" element={<DashBoard />} />
       </Routes>
     </Router>
   );

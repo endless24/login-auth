@@ -2,40 +2,51 @@ import React, { useState } from "react";
 import bg from "../asset/img/nature.avif";
 import { Link } from "react-router-dom";
 import { registerUsers } from "../app/feactures/registerSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-  const [firstname, setFirstName] = useState("");
-  const [lastname, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [regData, setRegData] = useState({
+    firstname: "",
+    lastname: "",
+    email: "",
+    password: "",
+  });
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handChange = (e) => {
+    const { name, value } = e.target;
+    setRegData((prev) => {
+      return { ...prev, [name]: value };
+    });
+  };
 
   const handleRegister = (e) => {
     e.preventDefault();
 
-    dispatch(registerUsers(firstname, lastname, email, password));
+    dispatch(registerUsers(regData));
 
     alert("Registered successfully!");
-    window.location.href = "/";
+    navigate("/");
 
-    setFirstName("");
-    setLastName("");
-    setEmail("");
-    setPassword("");
+    setRegData("");
   };
 
-  const canRegister =
-    Boolean(firstname) &&
-    Boolean(lastname) &&
-    Boolean(email) &&
-    Boolean(password);
-  //preventing registered user to have access to dashboard
-  const userData = useSelector((state) => state.userReducer);
-  if (Object.keys(userData?.value).length > 0) {
-    return (window.location.href = "/dashboard");
-  }
+  // const canRegister =
+  //   Boolean(firstname) &&
+  //   Boolean(lastname) &&
+  //   Boolean(email) &&
+  //   Boolean(password);
+
+  //preventing login user to have access to register page unless he logout
+  // const userData = useSelector((state) => state.userReducer);
+  // useEffect(() => {
+  //   if (Object.keys(userData?.value).length > 0) {
+  //     navigate("/dashboard");
+  //   }
+  // }, [userData, navigate]);
 
   return (
     <div
@@ -58,10 +69,10 @@ const Register = () => {
               type="text"
               id="firstname"
               name="firstname"
-              value={firstname}
+              value={regData.firstname}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               placeholder="Enter your firstname"
-              onChange={(e) => setFirstName(e.target.value)}
+              onChange={handChange}
             />
           </div>
           <div className="mb-4">
@@ -72,10 +83,10 @@ const Register = () => {
               type="text"
               id="lastname"
               name="lastname"
-              value={lastname}
+              value={regData.lastname}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               placeholder="Enter your lastname"
-              onChange={(e) => setLastName(e.target.value)}
+              onChange={handChange}
             />
           </div>
           <div className="mb-4">
@@ -86,10 +97,10 @@ const Register = () => {
               type="email"
               id="email"
               name="email"
-              value={email}
+              value={regData.email}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               placeholder="Enter your email"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handChange}
             />
           </div>
           <div className="mb-6">
@@ -100,10 +111,10 @@ const Register = () => {
               type="password"
               id="password"
               name="password"
-              value={password}
+              value={regData.password}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               placeholder="Enter your password"
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handChange}
             />
           </div>
           <button
@@ -112,7 +123,7 @@ const Register = () => {
             rounded-md shadow-sm text-sm font-medium text-white
              bg-blue-600 hover:bg-blue-700 focus:outline-none 
              focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-            disabled={!canRegister}
+            // disabled={!canRegister}
           >
             Sign In
           </button>

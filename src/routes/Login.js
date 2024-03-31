@@ -1,31 +1,40 @@
 import React, { useState } from "react";
 import bg from "../asset/img/nature.avif";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { userLoginStore } from "../app/feactures/userSlice";
+import { userAction } from "../app/feactures/userSlice";
 
 const Login = () => {
   const users = useSelector((state) => state.registerReducer);
 
-  const [userEmail, setUserEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [userData, setUserData] = useState({
+    email: "",
+    password: "",
+  });
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setUserData((prev) => {
+      return { ...prev, [name]: value };
+    });
+  };
 
   const loginFn = async (e) => {
     e.preventDefault();
     //checking if the matches
-    const authUser = users.filter((user) => {
-      return user.email === userEmail;
-    });
-
+    const authUser = users.filter((user) => user.email === userData.email);
+    console.log(authUser);
     if (authUser.length > 0) {
       //checking if the password matches
-      if (authUser[0].password === password) {
-        dispatch(userLoginStore(authUser[0]));
+      if (authUser[0].password === userData.password) {
+        dispatch(userAction.login(authUser[0]));
 
-        window.location.href = "/dashboard";
+        navigate("/dashboard");
       } else {
         alert("Incorrect Password");
       }
@@ -35,10 +44,10 @@ const Login = () => {
   };
 
   //making sure the user that login have access to dashboard
-  const userData = useSelector((state) => state.userReducer);
-  if (Object.keys(userData?.value).length > 0) {
-    return (window.location.href = "/dashboard");
-  }
+  // const userData = useSelector((state) => state.userReducer);
+  // if (Object.keys(userData?.value).length > 0) {
+  //   return navigate("/dashboard");
+  // }
   return (
     <div
       className="bg-cover bg-center bg-fixed"
@@ -55,16 +64,16 @@ const Login = () => {
               htmlFor="username"
               className="block text-sm font-medium text-gray-200"
             >
-              Username
+              Email
             </label>
             <input
               type="text"
-              id="username"
-              name="username"
-              value={userEmail}
+              id="email"
+              name="email"
+              value={userData.email}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              placeholder="Enter your username"
-              onChange={(e) => setUserEmail(e.target.value)}
+              placeholder="Enter your email"
+              onChange={handleChange}
             />
           </div>
           <div className="mb-6">
@@ -78,10 +87,10 @@ const Login = () => {
               type="password"
               id="password"
               name="password"
-              value={password}
+              value={userData.password}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               placeholder="Enter your password"
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handleChange}
             />
             <p className="text-gray-200 text-sm pt-2">
               <Link to="/forgotpassword"> forgot password?</Link>
