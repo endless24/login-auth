@@ -23,7 +23,7 @@ const registerSlice = createSlice({
         return {
           payload: {
             id: nanoid(),
-            regData,
+            ...regData,
           },
         };
       },

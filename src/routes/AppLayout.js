@@ -8,7 +8,7 @@ const AppLayout = () => {
   const userData = useSelector((state) => state.userReducer);
 
   useEffect(() => {
-    if (userData && Object.keys(userData.value).length > 0) {
+    if (Object.keys(userData.value).length > 0) {
       navigate("/dashboard");
     }
   }, [userData, navigate]);

@@ -11,7 +11,7 @@ const DashBoard = () => {
 
   //preventing user that didn't login not to have access to dashboard but login page
   useEffect(() => {
-    if (userData && Object.keys(userData.value).length <= 0) {
+    if (Object.keys(userData?.value).length <= 0) {
       navigate("/");
     }
   }, [userData, navigate]);
