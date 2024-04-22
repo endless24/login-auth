@@ -1,9 +1,8 @@
-import { configureStore } from "@reduxjs/toolkit";
-import registerReducer from "./feactures/registerSlice";
+import { combineSlices, configureStore } from "@reduxjs/toolkit";
+import registerSlice from "./feactures/registerSlice";
 import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
-import { combineReducers } from "@reduxjs/toolkit";
-import userReducer from "./feactures/userSlice";
+import userSlice from "./feactures/userSlice";
 
 //persist storage
 const persistConfig = {
@@ -12,10 +11,7 @@ const persistConfig = {
   storage,
 };
 
-const reducer = combineReducers({
-  registerReducer,
-  userReducer,
-});
+const reducer = combineSlices(registerSlice, userSlice);
 
 const persistedReducer = persistReducer(persistConfig, reducer);
 

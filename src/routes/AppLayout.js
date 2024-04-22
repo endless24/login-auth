@@ -1,17 +1,21 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
+import { userSelectors } from "../app/feactures/userSlice";
 
 const AppLayout = () => {
   const navigate = useNavigate();
   // making sure the user that login have access to dashboard
-  const userData = useSelector((state) => state.userReducer);
-
+  const loggedIn = useSelector(userSelectors.loggedIn);
+  console.log(loggedIn);
   useEffect(() => {
-    if (Object.keys(userData.value).length > 0) {
+    // !loggedIn && navigate("/");
+    if (!loggedIn) {
+      navigate("/");
+    } else if (loggedIn) {
       navigate("/dashboard");
     }
-  }, [userData, navigate]);
+  }, [loggedIn, navigate]);
 
   return (
     <div>

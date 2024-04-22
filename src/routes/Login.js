@@ -1,20 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import bg from "../asset/img/nature.avif";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { userAction } from "../app/feactures/userSlice";
+import { userSelectors } from "../app/feactures/userSlice";
+import { regSelectors } from "../app/feactures/registerSlice";
 
 const Login = () => {
-  const users = useSelector((state) => state.registerReducer);
+  const loggedIn = useSelector(userSelectors.loggedIn);
 
+  const registeredUsers = useSelector(regSelectors.users);
+  // console.log(registeredUsers);
   const [userData, setUserData] = useState({
     email: "",
     password: "",
   });
 
   const dispatch = useDispatch();
+
   const navigate = useNavigate();
+
+  //checking if the user is login or not
+  useEffect(() => {
+    loggedIn && navigate("/dashboard");
+  }, [loggedIn, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,12 +37,14 @@ const Login = () => {
   const loginFn = async (e) => {
     e.preventDefault();
     //checking if the email matches
-    const authUser = users.filter((user) => user.email === userData.email);
+    const authUser = registeredUsers.find(
+      (user) => user.email === userData.email
+    );
 
-    if (authUser.length > 0) {
+    if (authUser) {
       //checking if the password matches
-      if (authUser[0].password === userData.password) {
-        dispatch(userAction.login(authUser[0]));
+      if (authUser.password === userData.password) {
+        dispatch(userAction.login(authUser));
 
         navigate("/dashboard");
       } else {

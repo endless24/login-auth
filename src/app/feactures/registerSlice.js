@@ -29,8 +29,13 @@ const registerSlice = createSlice({
       },
     },
   },
+  selectors: {
+    users: (state) => state,
+  },
 });
 
 export const { registerUsers } = registerSlice.actions;
 
-export default registerSlice.reducer;
+export const regSelectors = registerSlice.selectors;
+
+export default registerSlice;
