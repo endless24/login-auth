@@ -26,12 +26,15 @@ const Register = () => {
   const handleRegister = (e) => {
     e.preventDefault();
 
-    dispatch(registerUsers(regData));
+    if (dispatch(registerUsers(regData))) {
+      alert("Registered successfully!");
 
-    alert("Registered successfully!");
-    navigate("/");
+      navigate("/");
 
-    setRegData("");
+      setRegData("");
+    } else {
+      alert("Error occured!");
+    }
   };
 
   // const canRegister =

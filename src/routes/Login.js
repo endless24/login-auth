@@ -26,9 +26,9 @@ const Login = () => {
 
   const loginFn = async (e) => {
     e.preventDefault();
-    //checking if the matches
+    //checking if the email matches
     const authUser = users.filter((user) => user.email === userData.email);
-    console.log(authUser);
+
     if (authUser.length > 0) {
       //checking if the password matches
       if (authUser[0].password === userData.password) {
